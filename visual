@@ -1,0 +1,58 @@
+#1.Box cox age of teams
+#goals per age, in general
+#goals in this cup
+library(wesanderson)
+wes_palette("Moonrise3")
+
+#1.
+
+ogplayers<-read.csv("2018 FIFA World Cup Squads.csv")
+names(ogplayers)
+# [1] "Team"          "Group"         "Squad.Number"  "Position"     
+# [5] "Player"        "Date.Of.Birth" "Age"           "Caps"         
+# [9] "Goals"         "Club"          "Player.Count" 
+
+train1<-ogplayers[,c(1,5,7,9)]
+
+top8<-c("Uruguay", "France", "Brazil", "Belgium", "Russia", "Croatia", "Sweden", "England")
+
+train1<-train1[train1$Team==top8[1]|train1$Team==top8[2]|train1$Team==top8[3]|train1$Team==top8[4]|train1$Team==top8[5]|train1$Team==top8[6]|train1$Team==top8[7]|train1$Team==top8[8],]
+
+
+
+library(datasets)
+ggplot(train1$Age,aes(train1$Team))
+
+names(train1)
+#[1] "Team"   "Player" "Age"    "Goals" 
+
+theme_set(theme_classic())
+a<-ggplot(train1,aes(Team,Age))
+a+geom_boxplot(fill="Plum")+geom_hline(yintercept=summary(train1$Age)[[4]]
+,linetype="dotted")
+
+summary(train1$Age)[[4]]
+mean(train1$Age) #27.16304
+median(train1$Age) #27
+#+scale_fill_manual(values=wes_palette("Moonrise3"))
+
+rownames(train1)<-seq(1,nrow(train1))
+
+
+#goals this tournament
+
+#minutes paid
+
+train2<-read.csv("Fifa goals1.csv")
+names(train2)
+[1] "Country"                     "Player"                     
+[3] "Goals.Scored"                "Minutes.Played"             
+[5] "Goals.Scored.minutes.played" "Age"
+
+
+theme_set(theme_bw())
+b<-ggplot(train2,aes(Age,Goals.Scored))
+b+geom_jitter((aes(col=Country,size=Minutes.Played)))+labs(title="Goals Scored v Age")+geom_hline(yintercept=1.667,col="red",linetype="dotted")
+  
+summary(train2$Goals.Scored)
+summary(train2$Minutes.Played)
